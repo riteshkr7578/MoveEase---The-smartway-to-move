@@ -25,7 +25,7 @@ export default function Signup() {
     setSuccess("");
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", formData);
+      const res = await axios.post("https://moveease-the-smartway-to-move.onrender.com/api/auth/register", formData);
 
       setSuccess("Signup successful! Redirecting...");
       setTimeout(() => navigate("/login"), 1200);

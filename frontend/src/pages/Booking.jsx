@@ -22,7 +22,7 @@ export default function Booking() {
 
     const fetchMover = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/movers/${moverId}`);
+        const res = await axios.get(`https://moveease-the-smartway-to-move.onrender.com/api/movers/${moverId}`);
         setMover(res.data);
         
       } catch (err) {
@@ -58,7 +58,7 @@ export default function Booking() {
   }
 
   try {
-    const res = await axios.get("http://localhost:5000/api/google/distance", {
+    const res = await axios.get("https://moveease-the-smartway-to-move.onrender.com/google/distance", {
       params: {
         origins: pickup,
         destinations: drop,
@@ -96,7 +96,7 @@ export default function Booking() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/bookings",
+        "https://moveease-the-smartway-to-move.onrender.com/api/bookings",
         {
           moverId,
           pickupLocation: pickup,

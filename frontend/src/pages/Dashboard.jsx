@@ -16,7 +16,7 @@ export default function Dashboard() {
   }
 
   axios
-    .get("http://localhost:5000/api/bookings", {
+    .get("https://moveease-the-smartway-to-move.onrender.com/api/bookings", {
       headers: { Authorization: `Bearer ${token}` },
     })
     .then((res) => setBookings(res.data))
@@ -29,7 +29,7 @@ export default function Dashboard() {
   const cancelBooking = async (id) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/${id}/cancel`,
+        `https://moveease-the-smartway-to-move.onrender.com/api/bookings/${id}/cancel`,
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -44,7 +44,7 @@ export default function Dashboard() {
   const updateStatus = async (id, status) => {
     try {
       await axios.put(
-        `http://localhost:5000/api/bookings/${id}/status`,
+        `https://moveease-the-smartway-to-move.onrender.com/api/bookings/${id}/status`,
         { status },
         { headers: { Authorization: `Bearer ${token}` } }
       );

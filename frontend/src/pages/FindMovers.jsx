@@ -15,7 +15,7 @@ export default function FindMovers() {
     }
 
     try {
-      const res = await axios.get("http://localhost:5000/api/movers", {
+      const res = await axios.get("https://moveease-the-smartway-to-move.onrender.com/api/movers", {
         params: { city: filters.fromCity }
       });
 
