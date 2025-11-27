@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({
   origin: [
     "http://localhost:5173", // Local frontend
-    "https://<your-vercel-domain>.vercel.app" // Replace after deployment!
+    "https://moveease-the-smartway-to-move.onrender.com/" 
   ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true,
