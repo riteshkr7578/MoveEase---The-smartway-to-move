@@ -12,5 +12,5 @@ console.log("Loaded Google API Key?", !!process.env.GOOGLE_MAPS_API_KEY);
 app.use("/api/google", googleRoutes);
 
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on ${PORT}`);
 });
