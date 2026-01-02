@@ -3,6 +3,8 @@ import MoversList from "../components/MoversList";
 import { useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Reveal from "../components/Reveal";
+
 
 export default function Home() {
   const [movers, setMovers] = useState([]);
@@ -25,9 +27,11 @@ export default function Home() {
 
 
   return (
+  
     <div>
 
       {/* HERO SECTION */}
+      <Reveal>
       <section className="pt-10 pb-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
@@ -76,12 +80,15 @@ export default function Home() {
 
         </div>
       </section>
-
+      </Reveal>
+<Reveal delay="delay-100">
       <SearchMovers onSearch={handleSearch} />
 
        <MoversList movers={movers} />
+</Reveal>
 
 {/* FEATURED MOVERS SECTION */}
+<Reveal>
 <section className="py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-6">
 
@@ -176,10 +183,11 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 
 
 {/* WHY CHOOSE MOVEEASE */}
+<Reveal>
 <section className="py-20 bg-white">
   <div className="max-w-7xl mx-auto px-6">
 
@@ -266,10 +274,11 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 
 {/* ---------------------------------------------------------------------------------- */}
 {/* HOW MOVEEASE WORKS */}
+<Reveal>
 <section className="py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-6">
 
@@ -332,9 +341,11 @@ export default function Home() {
     </div>
   </div>
 </section>
+</Reveal>
 {/* ------------------------------------------------------------------------------------------------------------------------ */}
 
 {/* CUSTOMER REVIEWS */}
+<Reveal>
 <section className="py-20 bg-white">
   <div className="max-w-7xl mx-auto px-6">
 
@@ -406,10 +417,12 @@ export default function Home() {
     </div>
   </div>
 </section>
+</Reveal>
 {/* ---------------------------------------------------------------------------------------------------------- */}
 
 
 {/* PAYMENT & SAFETY GUARANTEES */}
+<Reveal>
 <section className="py-20 bg-gray-50">
   <div className="max-w-7xl mx-auto px-6">
 
@@ -496,11 +509,12 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 {/* -------------------------------------------------------------------------------------------------------- */}
 
 
 {/* FINAL CTA BANNER */}
+<Reveal>
 <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
   <div className="max-w-6xl mx-auto text-center px-6">
 
@@ -518,9 +532,11 @@ export default function Home() {
 
   </div>
 </section>
+</Reveal>
 {/* ------------------------------------------------------------------------------------------------------------------------ */}
 
 {/* FOOTER SECTION */}
+<Reveal>
 <footer className="bg-gray-900 text-gray-300 py-16">
   <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
 
@@ -577,6 +593,7 @@ export default function Home() {
     © {new Date().getFullYear()} MoveEase. All Rights Reserved.
   </div>
 </footer>
+</Reveal>
 
     </div>
   );
