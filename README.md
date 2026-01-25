@@ -1,80 +1,89 @@
-🚚 MoveEase – Smart Packers & Movers Platform (Full-Stack Web App)
+# 🚚 MoveEase – Smart Packers & Movers Platform
 
-MoveEase is a full-stack web application that helps users search, compare, and book verified packers & movers with transparent pricing and a smooth booking experience.
+**Full-Stack Web Application**
 
-The project focuses on solving a real-world logistics problem using modern full-stack technologies, role-based access control, and scalable backend architecture.
+MoveEase is a **full-stack web application** designed to simplify the process of searching, comparing, and booking **verified packers & movers** with transparent pricing and a seamless booking experience.
 
-✨ Key Features
-👤 Customer Features
+The platform addresses a **real-world logistics problem** by connecting customers with movers through a secure, role-based system and a scalable backend architecture.
 
-🔍 Search packers & movers by city
+---
 
-📊 Compare available movers
+## 🌟 Project Overview
 
-📍 Distance-based price calculation
+Finding reliable packers & movers is often time-consuming, unstructured, and lacks price transparency.
+**MoveEase** solves this by providing:
 
-📝 Book movers securely
+* A centralized platform for customers to discover movers
+* Distance-based pricing using Google Maps
+* Secure booking and tracking
+* Dedicated dashboards for both customers and movers
 
-📂 View all bookings in personal dashboard
+The application is built using modern **full-stack technologies** with a focus on **security, scalability, and clean architecture**.
 
-❌ Cancel pending bookings
+---
 
-🔐 Secure login & signup (JWT)
+## ✨ Key Features
 
-🚛 Mover Features
+### 👤 Customer Features
 
-🏢 Create mover business profile
+* 🔍 Search packers & movers by city
+* 📊 Compare available movers
+* 📍 Distance-based price calculation
+* 📝 Secure booking of movers
+* 📂 View all bookings in personal dashboard
+* ❌ Cancel pending bookings
+* 🔐 Secure login & signup using JWT authentication
 
-📥 View customer bookings
+### 🚛 Mover Features
 
-✅ Accept / ❌ Reject bookings
+* 🏢 Create and manage mover business profile
+* 📥 View customer booking requests
+* ✅ Accept or ❌ reject bookings
+* 🔄 Update booking status
+  *(Pending → Accepted → Rejected → Completed)*
 
-🔄 Update booking status (Pending → Accepted / Rejected / Completed)
+---
 
-🛠 Tech Stack
-Frontend
+## 🛠 Tech Stack
 
-React.js
+### Frontend
 
-Tailwind CSS
+* React.js
+* Tailwind CSS
+* Axios
+* React Router DOM
 
-Axios
+### Backend
 
-React Router DOM
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* JWT Authentication
 
-Backend
+### APIs & Services
 
-Node.js
+* Google Maps Distance Matrix API *(distance calculation)*
+* RESTful API architecture
 
-Express.js
+---
 
-MongoDB
+## 🔐 Authentication & Authorization
 
-Mongoose
+* JWT-based authentication
+* Role-based access control:
 
-JWT Authentication
+  * `customer`
+  * `mover`
+* Protected routes using middleware
+* Secure access to dashboards and bookings
+* Authorization checks on every sensitive API route
 
-APIs & Services
+---
 
-Google Maps Distance Matrix API (for distance calculation)
+## 📁 Project Structure (Simplified)
 
-RESTful API architecture
-
-🔐 Authentication & Authorization
-
-JWT-based authentication
-
-Role-based access control:
-
-customer
-
-mover
-
-Protected routes using middleware
-
-Secure access to bookings and dashboards
-
-📁 Project Structure (Simplified)
+```
 MoveEase/
 │
 ├── backend/
@@ -92,56 +101,141 @@ MoveEase/
 │   ├── App.jsx
 │
 └── README.md
+```
 
-⚙️ Setup & Installation
-1️⃣ Clone the Repository
-git clone https://github.com/your-username/moveease.git
-cd moveease
+---
 
-2️⃣ Backend Setup
+## ⚙️ Setup & Installation
+
+### ✅ Prerequisites
+
+* Node.js (v16+ recommended)
+* MongoDB (local or Atlas)
+* npm
+* Google Maps API key
+
+---
+
+## 🔧 Backend Setup
+
+### 1️⃣ Navigate to Backend Folder
+
+```bash
 cd backend
 npm install
+```
 
+### 2️⃣ Backend Environment Variables
 
-Create .env file:
+Create a `.env` file inside the `backend` directory.
 
-MONGO_URI=your_mongodb_connection_string
+**Example (`backend/.env`):**
+
+```env
+PORT=5000
+MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/moveease
 JWT_SECRET=your_jwt_secret
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+```
 
+> ⚠️ These values are **examples only**.
+> Use your own credentials when running locally.
 
-Start backend server:
+### 3️⃣ Start Backend Server
 
+```bash
 npm run dev
+```
 
-3️⃣ Frontend Setup
+Backend will run on:
+
+```
+http://localhost:5000
+```
+
+---
+
+## 🎨 Frontend Setup
+
+### 1️⃣ Navigate to Frontend Folder
+
+```bash
 cd frontend
 npm install
+```
+
+### 2️⃣ Frontend Environment Variables
+
+Create a `.env` file inside the `frontend` directory.
+
+**Example (`frontend/.env`):**
+
+```env
+VITE_API_URL=http://localhost:5000/api
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+```
+
+### 3️⃣ Start Frontend Server
+
+```bash
 npm run dev
+```
 
-📊 Core Functionalities Explained
-🔹 Search Movers
+Frontend will run on:
 
-Users select a city
+```
+http://localhost:5173
+```
 
-Backend filters movers using case-insensitive queries
+---
 
-Results displayed dynamically on frontend
+## 📊 Core Functionalities Explained
 
-🔹 Distance-Based Pricing
+### 🔹 Search Movers
 
-Pickup & drop locations selected using Google Places
+* Users select a city
+* Backend filters movers using **case-insensitive queries**
+* Results are dynamically displayed on the frontend
 
-Distance calculated via Google Maps API
+### 🔹 Distance-Based Pricing
 
-Cost estimated using:
+* Pickup & drop locations selected using Google Places
+* Distance calculated using Google Maps Distance Matrix API
+* Price calculated as:
 
+```
 Total Cost = Base Price + (Distance × Price per Km)
+```
 
-🔹 Booking System
+### 🔹 Booking System
 
-Customers can create bookings
+* Customers create booking requests
+* Movers manage booking lifecycle
+* Booking access is strictly controlled using roles
+* Customers can only view **their own bookings**
+* Movers can only manage **assigned bookings**
 
-Movers manage booking status
+---
 
-Secure access ensured via role checks
+## 🧠 Architectural Highlights
+
+* Modular backend structure
+* Clear separation of routes, controllers, models, and middleware
+* Secure role-based route protection
+* Scalable REST API design
+* Centralized API handling using Axios
+* Responsive UI built with Tailwind CSS
+
+---
+
+## 📘 Documentation Note
+
+📌 **Note:**
+All project details, features, setup instructions, and architectural explanations are fully documented in this README. Reviewers are encouraged to refer to this document for complete information.
+
+---
+
+## 👨‍💻 Author
+
+**Ritesh Kumar**
+Full-Stack Developer(MERN)
