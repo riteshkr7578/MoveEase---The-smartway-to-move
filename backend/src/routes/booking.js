@@ -19,7 +19,7 @@ router.post("/", auth, async (req, res) => {
       return res.status(403).json({ msg: "Only customers can book movers" });
     }
 
-    const { moverId, pickupLocation, dropLocation, distance, paymentStatus } = req.body;
+    const { moverId, pickupLocation, dropLocation, moveType, bookingDate, distance, paymentStatus } = req.body;
 
     if (!moverId || !pickupLocation || !dropLocation || !distance) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -38,6 +38,8 @@ router.post("/", auth, async (req, res) => {
       mover: moverId,
       pickupLocation,
       dropLocation,
+      moveType,
+      bookingDate,
       distance,
       estimatedCost,
       status: "pending",
