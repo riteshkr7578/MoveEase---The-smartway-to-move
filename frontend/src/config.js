@@ -1,1 +1,3 @@
-export const API_BASE_URL = "https://moveease-the-smartway-to-move.onrender.com/";
+import { BASE_URL } from "./api";
+
+export const API_BASE_URL = BASE_URL;

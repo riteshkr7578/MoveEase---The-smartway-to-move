@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { BASE_URL } from "../api";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = useState(false); // Mobile menu
@@ -107,7 +108,7 @@ export default function Navbar() {
                 <img
                   src={
                     user.profilePicture 
-                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.profilePicture}`) 
+                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${BASE_URL}${user.profilePicture}`) 
                       : `https://ui-avatars.com/api/?name=${user.name}&background=2563EB&color=fff`
                   }
                   className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm object-cover"

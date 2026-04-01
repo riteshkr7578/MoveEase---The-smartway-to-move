@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import api from "../api";
+import api, { BASE_URL } from "../api";
 
 export default function Profile() {
   const [user, setUser] = useState({
@@ -100,7 +100,7 @@ export default function Profile() {
                   preview 
                     ? preview 
                     : user?.profilePicture 
-                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.profilePicture}`) 
+                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${BASE_URL}${user.profilePicture}`) 
                       : `https://ui-avatars.com/api/?name=${user?.name}&background=ffffff&color=2563EB`
                 } 
                 alt="Profile" 

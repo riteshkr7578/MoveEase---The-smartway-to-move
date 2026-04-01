@@ -1,8 +1,10 @@
 import axios from "axios";
 
+export const BASE_URL = "https://moveease-the-smartway-to-move.onrender.com";
+// export const BASE_URL = "http://localhost:5000";
+
 const api = axios.create({
-  // baseURL: "http://localhost:5000",
-  baseURL: "https://moveease-the-smartway-to-move.onrender.com/",
+  baseURL: BASE_URL,
 });
 
 // Add a request interceptor to attach the auth token automatically
