@@ -102,10 +102,14 @@ export default function Navbar() {
               {/* PROFILE ICON */}
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
-                className="flex items-center gap-2 focus:outline-none"
+                className="flex items-center gap-2 focus:outline-none bg-white dark:bg-gray-800 rounded-full"
               >
                 <img
-                  src={user.profilePicture || `https://ui-avatars.com/api/?name=${user.name}&background=2563EB&color=fff`}
+                  src={
+                    user.profilePicture 
+                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.profilePicture}`) 
+                      : `https://ui-avatars.com/api/?name=${user.name}&background=2563EB&color=fff`
+                  }
                   className="w-10 h-10 rounded-full border border-gray-200 dark:border-gray-700 shadow-sm object-cover"
                   alt="profile"
                 />

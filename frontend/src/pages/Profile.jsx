@@ -63,7 +63,8 @@ export default function Profile() {
       });
       
       // Update local storage with new details (if needed by Navbar)
-      const updatedUser = { ...JSON.parse(localStorage.getItem("user")), ...res.data.user };
+      const currentUserData = JSON.parse(localStorage.getItem("user"));
+      const updatedUser = { ...currentUserData, ...res.data.user };
       localStorage.setItem("user", JSON.stringify(updatedUser));
       
       setUser(res.data.user);
@@ -95,7 +96,13 @@ export default function Profile() {
           <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2">
             <div className="relative group">
               <img 
-                src={preview || `https://ui-avatars.com/api/?name=${user.name}&background=ffffff&color=2563EB`} 
+                src={
+                  preview 
+                    ? preview 
+                    : user?.profilePicture 
+                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${import.meta.env.VITE_API_URL || 'http://localhost:5000'}${user.profilePicture}`) 
+                      : `https://ui-avatars.com/api/?name=${user?.name}&background=ffffff&color=2563EB`
+                } 
                 alt="Profile" 
                 className="w-28 h-28 rounded-full border-4 border-white dark:border-gray-800 object-cover bg-white"
               />

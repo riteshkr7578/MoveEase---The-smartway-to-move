@@ -37,7 +37,7 @@ router.post("/register", async (req, res) => {
     res.json({
       msg: "Registered successfully",
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role }
+      user: { id: user._id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }
     });
 
   } catch (err) {
@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
     res.json({
       msg: "Login successful",
       token,
-      user: { id: user._id, name: user.name, email: user.email, role: user.role }
+      user: { id: user._id, name: user.name, email: user.email, role: user.role, profilePicture: user.profilePicture }
     });
 
   } catch (err) {
