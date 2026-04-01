@@ -49,8 +49,8 @@ export default function Navbar() {
 
         {/* Desktop Menu */}
         <div className="hidden md:flex items-center space-x-8 text-gray-700 dark:text-gray-300 font-medium">
-          <Link to="/" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Home</Link>
-          <Link to="/find-movers" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Find Movers</Link>
+          <Link to="/" onClick={() => setOpenMenu(false)} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Home</Link>
+          <Link to="/find-movers" onClick={() => setOpenMenu(false)} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Find Movers</Link>
 
           {/* Dropdown: Services */}
           <div className="relative group cursor-pointer py-2">
@@ -60,23 +60,23 @@ export default function Navbar() {
             </span>
 
             <div className="absolute top-full left-0 hidden group-hover:block bg-white dark:bg-gray-800 shadow-xl border border-gray-100 dark:border-gray-700 mt-0 rounded-xl w-64 p-2 z-50 transition-all opacity-0 group-hover:opacity-100">
-              <Link to='/services/home-shifting' className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+              <Link to='/services/home-shifting' onClick={() => setOpenMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                 <span className="text-xl bg-blue-100 dark:bg-gray-900 p-1.5 rounded-md">🏠</span> 
                 <span className="font-medium text-[15px]">Home Shifting</span>
               </Link>
-              <Link to='/services/office-shifting' className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-1">
+              <Link to='/services/office-shifting' onClick={() => setOpenMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-1">
                 <span className="text-xl bg-blue-100 dark:bg-gray-900 p-1.5 rounded-md">🏢</span> 
                 <span className="font-medium text-[15px]">Office Shifting</span>
               </Link>
-              <Link to='/services/vehicle-transport' className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-1">
+              <Link to='/services/vehicle-transport' onClick={() => setOpenMenu(false)} className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400 transition-colors mt-1">
                 <span className="text-xl bg-blue-100 dark:bg-gray-900 p-1.5 rounded-md">🚚</span> 
                 <span className="font-medium text-[15px]">Vehicle Transport</span>
               </Link>
             </div>
           </div>
 
-          <Link to="/reviews" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Customer Reviews</Link>
-          <Link to="/help" className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Help & Support</Link>
+          <Link to="/reviews" onClick={() => setOpenMenu(false)} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Customer Reviews</Link>
+          <Link to="/help" onClick={() => setOpenMenu(false)} className="hover:text-blue-600 dark:hover:text-blue-400 transition-colors duration-200">Help & Support</Link>
         </div>
 
         {/* Right Auth/Profile Section */}
@@ -186,10 +186,14 @@ export default function Navbar() {
         <div className="md:hidden flex items-center gap-3">
           <button 
             onClick={toggleDarkMode} 
-            className="flex items-center justify-center w-10 h-10 rounded-full border-2 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition-all shadow-sm"
-            title="Toggle Theme"
+            className="p-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-all duration-300 shadow-sm"
+            title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
           >
-            {darkMode ? <span className="text-yellow-500 text-xl leading-none">☀️</span> : <span className="text-blue-400 text-xl leading-none">🌙</span>}
+            {darkMode ? (
+              <Sun size={20} className="text-yellow-500 animate-pulse" />
+            ) : (
+              <Moon size={20} className="text-blue-500" />
+            )}
           </button>
           <button
             className="text-3xl text-gray-700 dark:text-gray-300"
@@ -205,23 +209,23 @@ export default function Navbar() {
       {openMenu && (
         <div className="md:hidden bg-white dark:bg-gray-900 shadow-md px-6 py-4 space-y-3 text-gray-800 dark:text-gray-200 transition-colors duration-300">
 
-          <Link to="/" className="block hover:text-blue-600 dark:hover:text-blue-400">Home</Link>
-          <Link to="/find-movers" className="block hover:text-blue-600 dark:hover:text-blue-400">Find Movers</Link>
+          <Link to="/" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600 dark:hover:text-blue-400">Home</Link>
+          <Link to="/find-movers" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600 dark:hover:text-blue-400">Find Movers</Link>
 
           <p className="font-medium text-gray-700 dark:text-gray-300">Services</p>
           <div className="pl-4 space-y-1 mt-2">
-            <Link to="/services/home-shifting" className="block hover:text-blue-600">Home Shifting</Link>
-            <Link to="/services/office-shifting" className="block hover:text-blue-600">Office Shifting</Link>
-            <Link to="/services/vehicle-transport" className="block hover:text-blue-600">Vehicle Transport</Link>
+            <Link to="/services/home-shifting" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600">Home Shifting</Link>
+            <Link to="/services/office-shifting" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600">Office Shifting</Link>
+            <Link to="/services/vehicle-transport" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600">Vehicle Transport</Link>
           </div>
 
-          <Link to="/reviews" className="block hover:text-blue-600">Customer Reviews</Link>
-          <Link to="/help" className="block hover:text-blue-600">Help & Support</Link>
+          <Link to="/reviews" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600">Customer Reviews</Link>
+          <Link to="/help" onClick={() => setOpenMenu(false)} className="block hover:text-blue-600">Help & Support</Link>
 
           {!user ? (
             <>
-              <Link to="/login" className="block px-4 py-2 border border-blue-500 text-blue-600 rounded-md hover:bg-blue-50 font-medium mt-4">Login</Link>
-              <Link to="/signup" className="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Sign Up</Link>
+              <Link to="/login" onClick={() => setOpenMenu(false)} className="block px-4 py-2 border border-blue-500 text-blue-600 rounded-md hover:bg-blue-50 font-medium mt-4">Login</Link>
+              <Link to="/signup" onClick={() => setOpenMenu(false)} className="block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 font-medium">Sign Up</Link>
             </>
           ) : (
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
@@ -237,18 +241,21 @@ export default function Navbar() {
                 </div>
               </div>
 
-              <Link to="/profile" className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">My Profile</Link>
+              <Link to="/profile" onClick={() => setOpenMenu(false)} className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">My Profile</Link>
               
               {user.role === "customer" && (
-                <Link to="/dashboard" className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">My Bookings</Link>
+                <Link to="/dashboard" onClick={() => setOpenMenu(false)} className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">My Bookings</Link>
               )}
 
               {user.role === "mover" && (
-                <Link to="/mover-dashboard" className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">My Business</Link>
+                <Link to="/mover-panel" onClick={() => setOpenMenu(false)} className="block py-2 hover:text-blue-600 dark:hover:text-blue-400">Mover Panel</Link>
               )}
 
               <button
-                onClick={handleLogout}
+                onClick={() => {
+                   setOpenMenu(false);
+                   handleLogout();
+                }}
                 className="block w-full text-left text-red-500 py-2 mt-2 hover:text-red-700"
               >
                 Logout
