@@ -25,7 +25,11 @@ export default function Signup() {
     setSuccess("");
 
     try {
+<<<<<<< HEAD
       const res = await api.post("/api/auth/register", formData);
+=======
+      const res = await axios.post("https://moveease-the-smartway-to-move.onrender.com/api/auth/register", formData);
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
 
       // Save session on signup
       localStorage.setItem("token", res.data.token);

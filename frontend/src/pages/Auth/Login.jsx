@@ -21,7 +21,11 @@ export default function Login() {
     setError("");
 
     try {
+<<<<<<< HEAD
       const res = await api.post("/api/auth/login", data);
+=======
+      const res = await axios.post("https://moveease-the-smartway-to-move.onrender.com/api/auth/login", data);
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
 
 
       // Save JWT token in localStorage

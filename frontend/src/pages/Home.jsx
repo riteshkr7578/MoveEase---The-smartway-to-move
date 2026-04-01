@@ -3,6 +3,8 @@ import MoversList from "../components/MoversList";
 import { useState, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Reveal from "../components/Reveal";
+
 
 export default function Home() {
   const [movers, setMovers] = useState([]);
@@ -12,7 +14,7 @@ export default function Home() {
     console.log("User search:", filters);
 
     try {
-      const res = await axios.get("http://localhost:5000/api/movers", {
+      const res = await axios.get("https://moveease-the-smartway-to-move.onrender.com/api/movers", {
         params: { city: filters.fromCity }  // 🔥 Pass city to backend
       });
 
@@ -31,10 +33,16 @@ export default function Home() {
 
 
   return (
+  
     <div>
 
       {/* HERO SECTION */}
+<<<<<<< HEAD
       <section className="pt-10 pb-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+=======
+      <Reveal>
+      <section className="pt-10 pb-20 bg-gray-50">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
 
           {/* LEFT TEXT */}
@@ -82,15 +90,25 @@ export default function Home() {
 
         </div>
       </section>
-
+      </Reveal>
+<Reveal delay="delay-100">
       <SearchMovers onSearch={handleSearch} />
 
+<<<<<<< HEAD
       <div ref={moversListRef}>
         <MoversList movers={movers} />
       </div>
 
 {/* FEATURED MOVERS SECTION */}
 <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+=======
+       <MoversList movers={movers} />
+</Reveal>
+
+{/* FEATURED MOVERS SECTION */}
+<Reveal>
+<section className="py-20 bg-gray-50">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-7xl mx-auto px-6">
 
     <h2 className="text-3xl md:text-4xl font-bold text-center mb-12 dark:text-white">
@@ -184,11 +202,16 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 
 
 {/* WHY CHOOSE MOVEEASE */}
+<<<<<<< HEAD
 <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+=======
+<Reveal>
+<section className="py-20 bg-white">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-7xl mx-auto px-6">
 
     {/* Heading */}
@@ -274,11 +297,16 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 
 {/* ---------------------------------------------------------------------------------- */}
 {/* HOW MOVEEASE WORKS */}
+<<<<<<< HEAD
 <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+=======
+<Reveal>
+<section className="py-20 bg-gray-50">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-7xl mx-auto px-6">
 
     {/* Heading */}
@@ -340,10 +368,16 @@ export default function Home() {
     </div>
   </div>
 </section>
+</Reveal>
 {/* ------------------------------------------------------------------------------------------------------------------------ */}
 
 {/* CUSTOMER REVIEWS */}
+<<<<<<< HEAD
 <section className="py-20 bg-white dark:bg-gray-900 transition-colors duration-300">
+=======
+<Reveal>
+<section className="py-20 bg-white">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-7xl mx-auto px-6">
 
     {/* Heading */}
@@ -414,11 +448,17 @@ export default function Home() {
     </div>
   </div>
 </section>
+</Reveal>
 {/* ---------------------------------------------------------------------------------------------------------- */}
 
 
 {/* PAYMENT & SAFETY GUARANTEES */}
+<<<<<<< HEAD
 <section className="py-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
+=======
+<Reveal>
+<section className="py-20 bg-gray-50">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-7xl mx-auto px-6">
 
     {/* Heading */}
@@ -504,12 +544,17 @@ export default function Home() {
     </div>
   </div>
 </section>
-
+</Reveal>
 {/* -------------------------------------------------------------------------------------------------------- */}
 
 
 {/* FINAL CTA BANNER */}
+<<<<<<< HEAD
 <section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 dark:from-blue-700 dark:to-blue-900 text-white transition-colors duration-300">
+=======
+<Reveal>
+<section className="py-20 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+>>>>>>> 8605aed3c3c24a5c751866d6db3f57217f159454
   <div className="max-w-6xl mx-auto text-center px-6">
 
     <h2 className="text-3xl md:text-4xl font-extrabold mb-4">
@@ -526,9 +571,11 @@ export default function Home() {
 
   </div>
 </section>
+</Reveal>
 {/* ------------------------------------------------------------------------------------------------------------------------ */}
 
 {/* FOOTER SECTION */}
+<Reveal>
 <footer className="bg-gray-900 text-gray-300 py-16">
   <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
 
@@ -585,6 +632,7 @@ export default function Home() {
     © {new Date().getFullYear()} MoveEase. All Rights Reserved.
   </div>
 </footer>
+</Reveal>
 
     </div>
   );

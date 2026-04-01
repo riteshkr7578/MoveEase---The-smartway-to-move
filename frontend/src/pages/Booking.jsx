@@ -22,7 +22,7 @@ export default function Booking() {
 
     const fetchMover = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/movers/${moverId}`);
+        const res = await axios.get(`https://moveease-the-smartway-to-move.onrender.com/api/movers/${moverId}`);
         setMover(res.data);
         
       } catch (err) {
@@ -50,42 +50,46 @@ export default function Booking() {
       if (place?.formatted_address) setDrop(place.formatted_address);
     });
   }, []);
-
-  // Distance Calculator
- const calculateDistance = async () => {
+// Distance Calculator
+const calculateDistance = async () => {
   if (!pickup || !drop) {
     return alert("Enter pickup and drop addresses!");
   }
 
   try {
-    const res = await axios.get("http://localhost:5000/api/google/distance", {
+    const res = await axios.get(`${import.meta.env.VITE_API_URL}/google/distance`, {
       params: {
         origins: pickup,
         destinations: drop,
       },
     });
 
-    const element = res.data.rows[0].elements[0];
+    const element = res.data.rows[0]?.elements[0];
 
-    if (element.status === "OK") {
+    if (element?.status === "OK") {
       const distKM = element.distance.value / 1000;
       setDistance(distKM.toFixed(2));
 
       if (mover) {
         const cost = Math.round(
           Number(mover.basePrice) +
-            distKM * Number(mover.pricePerKm)
+          distKM * Number(mover.pricePerKm)
         );
         setEstimatedCost(cost);
       }
+
+      console.log("Distance fetched successfully:", distKM + " km");
+
     } else {
       alert("Route not found! Try different locations.");
     }
+
   } catch (err) {
     console.error("Distance API Error:", err);
     alert("Unable to fetch distance!");
   }
 };
+
 
   // Submit Booking
   const handleBooking = async () => {
@@ -96,7 +100,7 @@ export default function Booking() {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/bookings",
+        "https://moveease-the-smartway-to-move.onrender.com/api/bookings",
         {
           moverId,
           pickupLocation: pickup,
