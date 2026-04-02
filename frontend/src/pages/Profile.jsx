@@ -28,6 +28,12 @@ export default function Profile() {
     try {
       const res = await api.get("/api/user/me");
       setUser(res.data.user);
+      
+      // Keep localStorage in sync with database so Navbar updates properly
+      const currentUserData = JSON.parse(localStorage.getItem("user")) || {};
+      const updatedUser = { ...currentUserData, ...res.data.user };
+      localStorage.setItem("user", JSON.stringify(updatedUser));
+      
       setPreview(null);
       setLoading(false);
     } catch (err) {
