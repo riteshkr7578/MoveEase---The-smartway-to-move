@@ -15,13 +15,15 @@ const BookingSchema = new mongoose.Schema({
 
   pickupLocation: { type: String, required: true },
   dropLocation: { type: String, required: true },
+  moveType: { type: String },
+  bookingDate: { type: Date },
 
   distance: { type: Number, required: true },  // in km
   estimatedCost: { type: Number, required: true },
 
   status: {
     type: String,
-    enum: ["pending", "accepted", "rejected", "completed"],
+    enum: ["pending", "accepted", "rejected", "completed", "cancelled"],
     default: "pending"
   },
 

@@ -52,6 +52,17 @@ export default function MoverDashboard() {
     }
   };
 
+  const updateStatus = async (id, status) => {
+    try {
+      await api.put(`/api/bookings/${id}/status`, { status });
+      setMessage(`Booking ${status} successfully!`);
+      fetchBookings(); // Refresh bookings list
+    } catch (err) {
+      console.error("Status update failed:", err);
+      setMessage("Failed to update status.");
+    }
+  };
+
   const handleChange = (e) => {
     setMoverData({ ...moverData, [e.target.name]: e.target.value });
   };
@@ -219,13 +230,63 @@ export default function MoverDashboard() {
                         </div>
                       </div>
                     </div>
+                    {booking.bookingDate && (
+                      <div className="mt-2 px-4 flex items-center gap-2">
+                        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">Move Date:</span>
+                        <span className="text-sm font-bold text-blue-600 dark:text-blue-400">
+                          {new Date(booking.bookingDate).toLocaleDateString()}
+                        </span>
+                      </div>
+                    )}
+                    {booking.moveType && (
+                      <div className="mt-2 px-4">
+                        <span className="text-xs font-bold uppercase py-1 px-2 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded">
+                          {booking.moveType}
+                        </span>
+                      </div>
+                    )}
 
                     <div className="mt-4 flex justify-between items-center text-sm">
-                      <div className="flex gap-4">
-                        <span className="text-gray-500">Distance: <b className="text-gray-900 dark:text-gray-100">{booking.distance} km</b></span>
-                        <span className="text-gray-500">Status: <b className="text-blue-600">{booking.status}</b></span>
+                      <div className="flex flex-col gap-2">
+                        <div className="flex gap-4">
+                          <span className="text-gray-500">Distance: <b className="text-gray-900 dark:text-gray-100">{booking.distance} km</b></span>
+                          <span className="text-gray-500">Status: <b className="text-blue-600">{booking.status}</b></span>
+                        </div>
+                        
+                        {/* Status Change Controls */}
+                        <div className="flex gap-2 mt-2">
+                          {booking.status === "pending" ? (
+                            <>
+                              <button
+                                onClick={() => updateStatus(booking._id, "accepted")}
+                                className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg font-medium transition-colors"
+                              >
+                                Accept
+                              </button>
+                              <button
+                                onClick={() => updateStatus(booking._id, "rejected")}
+                                className="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          ) : (
+                            <div className="flex items-center gap-2">
+                              <span className="text-xs font-semibold uppercase text-gray-400">Update Status:</span>
+                              <select
+                                value={booking.status}
+                                onChange={(e) => updateStatus(booking._id, e.target.value)}
+                                className="p-1 px-2 border rounded-md bg-white dark:bg-gray-800 dark:text-white dark:border-gray-600 text-xs outline-none focus:ring-1 focus:ring-blue-500"
+                              >
+                                <option value="accepted">Accepted</option>
+                                <option value="completed">Completed</option>
+                                <option value="rejected">Rejected</option>
+                              </select>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                      <div className="text-lg font-bold text-blue-600">
+                      <div className="text-2xl font-bold text-blue-600">
                         ₹{booking.estimatedCost}
                       </div>
                     </div>

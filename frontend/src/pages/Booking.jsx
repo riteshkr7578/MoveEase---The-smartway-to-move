@@ -7,9 +7,11 @@ export default function Booking() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const moverId = searchParams.get("moverId");
+  const moveType = searchParams.get("moveType") || "";
 
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
+  const [bookingDate, setBookingDate] = useState("");
   const [distance, setDistance] = useState(null);
   const [estimatedCost, setEstimatedCost] = useState(null);
   const [mover, setMover] = useState(null);
@@ -95,6 +97,7 @@ const calculateDistance = async () => {
   // Submit Booking
   const handleBooking = async (paymentOption) => {
     if (!distance) return alert("Calculate distance first!");
+    if (!bookingDate) return alert("Please select a booking date!");
 
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
@@ -107,6 +110,8 @@ const calculateDistance = async () => {
           moverId,
           pickupLocation: pickup,
           dropLocation: drop,
+          moveType,
+          bookingDate,
           distance: Number(distance),
           paymentStatus: paymentOption === "pay_later" ? "pay_later" : "pending",
         }
@@ -209,6 +214,20 @@ const calculateDistance = async () => {
           placeholder="Drop Location"
           className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
         />
+
+        <div className="space-y-1">
+          <label className="text-sm font-semibold text-gray-600 dark:text-gray-400 ml-1 italic">
+            Select Date of Move
+          </label>
+          <input
+            type="date"
+            value={bookingDate}
+            onChange={(e) => setBookingDate(e.target.value)}
+            min={new Date().toISOString().split("T")[0]}
+            className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+            required
+          />
+        </div>
 
         <button
           onClick={calculateDistance}
