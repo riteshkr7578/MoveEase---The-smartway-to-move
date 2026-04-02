@@ -231,7 +231,11 @@ export default function Navbar() {
             <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3 px-2 mb-4">
                 <img
-                  src={user.profilePicture || `https://ui-avatars.com/api/?name=${user.name}&background=2563EB&color=fff`}
+                  src={
+                    user.profilePicture 
+                      ? (user.profilePicture.startsWith('http') ? user.profilePicture : `${BASE_URL}${user.profilePicture}`) 
+                      : `https://ui-avatars.com/api/?name=${user.name}&background=2563EB&color=fff`
+                  }
                   className="w-10 h-10 rounded-full object-cover"
                   alt="profile"
                 />

@@ -24,6 +24,12 @@ export default function FindMovers() {
       setMovers(res.data);
       console.log("Backend movers response:", res.data);
       
+      // Update URL with filters so results can persist or be used by MoversList
+      const newParams = new URLSearchParams();
+      if (filters.fromCity) newParams.set("city", filters.fromCity);
+      if (filters.moveType) newParams.set("moveType", filters.moveType);
+      window.history.replaceState(null, "", "?" + newParams.toString());
+      
       // Auto-scroll to movers list after a short delay to ensure rendering
       setTimeout(() => {
         moversListRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
