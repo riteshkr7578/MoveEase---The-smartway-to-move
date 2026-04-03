@@ -31,7 +31,7 @@ export default function MoversList({ movers }) {
               onClick={() => {
                 const searchParams = new URLSearchParams(window.location.search);
                 const moveType = searchParams.get("moveType") || "";
-                window.location.href = `/booking?moverId=${mover._id}${moveType ? `&moveType=${moveType}` : ""}`;
+                window.location.href = `/booking?moverId=${mover._id}${moveType ? `&moveType=${encodeURIComponent(moveType)}` : ""}`;
               }}
               className="block w-full text-center mt-4 bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 dark:hover:bg-blue-800 transition"
             >

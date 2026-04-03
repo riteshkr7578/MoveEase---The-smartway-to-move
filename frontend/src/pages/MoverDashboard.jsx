@@ -9,7 +9,18 @@ export default function MoverDashboard() {
     basePrice: "",
     pricePerKm: "",
     serviceAreas: "",
+    services: [], // Array of service names
   });
+
+  const availableServicesList = [
+    "Home Shifting",
+    "Office Shifting",
+    "Vehicle Transport",
+    "Fragile Shifting",
+    "International Relocation",
+    "Industrial Shifting",
+    "Storage & Warehouse"
+  ];
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -30,6 +41,7 @@ export default function MoverDashboard() {
         setMoverData({
           ...res.data,
           serviceAreas: res.data.serviceAreas?.join(", ") || "",
+          services: res.data.services || [],
         });
       }
     } catch (err) {
@@ -65,6 +77,16 @@ export default function MoverDashboard() {
 
   const handleChange = (e) => {
     setMoverData({ ...moverData, [e.target.name]: e.target.value });
+  };
+
+  const toggleService = (service) => {
+    let currentServices = [...moverData.services];
+    if (currentServices.includes(service)) {
+      currentServices = currentServices.filter((s) => s !== service);
+    } else {
+      currentServices.push(service);
+    }
+    setMoverData({ ...moverData, services: currentServices });
   };
 
   const handleSubmit = async (e) => {
@@ -168,6 +190,28 @@ export default function MoverDashboard() {
                   rows="2"
                   className="p-3 bg-gray-50 dark:bg-gray-700 border dark:border-gray-600 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                 />
+              </div>
+
+              <div className="flex flex-col">
+                <label className="text-xs font-semibold mb-2 uppercase tracking-wider text-gray-500 flex items-center gap-1">
+                  <Package size={14} /> Services Offered
+                </label>
+                <div className="flex flex-wrap gap-2 mb-2 min-h-24 p-3 bg-gray-50 dark:bg-gray-700/50 border dark:border-gray-600 rounded-lg">
+                  {availableServicesList.map((service) => (
+                    <button
+                      key={service}
+                      type="button"
+                      onClick={() => toggleService(service)}
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
+                        moverData.services.includes(service)
+                          ? "bg-blue-600 text-white shadow-md shadow-blue-500/20"
+                          : "bg-gray-200 dark:bg-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-500"
+                      }`}
+                    >
+                      {service}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               <button

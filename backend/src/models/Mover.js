@@ -16,6 +16,10 @@ const MoverSchema = new mongoose.Schema({
   rating: { type: Number, default: 4.5 },
   totalReviews: { type: Number, default: 0 },
   serviceAreas: { type: [String], default: [] }, // Array of cities served
+  services: { 
+    type: [String], 
+    default: ["Home Shifting", "Office Shifting", "Vehicle Transport"] 
+  }, // Types of services offered
 
   createdAt: { type: Date, default: Date.now }
 });

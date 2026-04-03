@@ -21,7 +21,7 @@ router.post("/", auth, async (req, res) => {
       return res.status(403).json({ msg: "Only movers can create business profile" });
     }
 
-    const { name, city, basePrice, pricePerKm, serviceAreas } = req.body;
+    const { name, city, basePrice, pricePerKm, serviceAreas, services } = req.body;
 
     if (!name || !city || !basePrice || !pricePerKm) {
       return res.status(400).json({ msg: "All required fields must be provided" });
@@ -36,7 +36,8 @@ router.post("/", auth, async (req, res) => {
         city,
         basePrice,
         pricePerKm,
-        serviceAreas
+        serviceAreas,
+        services
       },
       { new: true, upsert: true }
     );

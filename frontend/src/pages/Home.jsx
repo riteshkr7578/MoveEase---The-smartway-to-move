@@ -21,6 +21,12 @@ export default function Home() {
       setMovers(res.data);
       console.log("Movers from backend:", res.data);
       
+      // Update URL with filters so moveType is preserved when booking
+      const newParams = new URLSearchParams();
+      if (filters.fromCity) newParams.set("city", filters.fromCity);
+      if (filters.moveType) newParams.set("moveType", filters.moveType);
+      window.history.replaceState(null, "", "?" + newParams.toString());
+
       // Auto-scroll to movers list after a short delay to ensure rendering
       setTimeout(() => {
         moversListRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
