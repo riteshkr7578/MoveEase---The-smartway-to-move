@@ -24,23 +24,33 @@ The application is built using modern **full-stack technologies** with a focus o
 
 ## ✨ Key Features
 
-### 👤 Customer Features
-
-* 🔍 Search packers & movers by city
-* 📊 Compare available movers
-* 📍 Distance-based price calculation
-* 📝 Secure booking of movers
-* 📂 View all bookings in personal dashboard
-* ❌ Cancel pending bookings
-* 🔐 Secure login & signup using JWT authentication
+* 🏎️ **Multiple Service Types**: Choose from Home Shifting, Office Shifting, or Vehicle Transport.
+* 🔍 **Search & Compare**: Find verified movers by city and compare based on ratings and services.
+* 📍 **Precision Pricing**: Distance-based price calculation using Google Maps Distance Matrix API.
+* 🗺️ **Google Places Integration**: Intelligent address selection using Autocomplete.
+* 💳 **Secure Payments**: Integrated with **Razorpay** for safe online transactions.
+* 📊 **Smart Dashboard**: View real-time booking history and status updates.
+* 👤 **Profile Management**: Maintain personal details and manage active moves.
+* 🌑 **Dark Mode Support**: Seamlessly switch between light and dark themes for better accessibility.
 
 ### 🚛 Mover Features
 
-* 🏢 Create and manage mover business profile
-* 📥 View customer booking requests
-* ✅ Accept or ❌ reject bookings
-* 🔄 Update booking status
-  *(Pending → Accepted → Rejected → Completed)*
+* 🏢 **Business Profile**: Create and manage professional mover profiles with service areas and pricing.
+* 📥 **Lead Management**: Real-time dashboard for incoming customer booking requests.
+* 💰 **Advanced Wallet & Ledger**:
+  * Track online earnings and pending payouts.
+  * **10% Commission Model**: Platform fee automatically calculated per booking.
+  * **Auto-Settlement**: Automatic reconciliation where cash job commissions are deducted from online payouts.
+  * Full transaction ledger for transparency.
+* ✅ **Booking Lifecycle**: Accept, reject, and update statuses from Pending to Completed.
+* 💸 **Payout Command Center**: Request transfers to bank and settle platform commissions.
+
+### 👑 Admin Features
+
+* 📈 **Analytics Dashboard**: Monitor platform growth, GMV (Gross Merchant Value), and Revenue.
+* 🔮 **Revenue Forecasting**: Predictive insights based on pending bookings.
+* 👥 **User Management**: Overview of all customers and movers on the platform.
+* 🛡️ **Role-Based Security**: Complete administrative control over platform activity.
 
 ---
 
@@ -48,23 +58,25 @@ The application is built using modern **full-stack technologies** with a focus o
 
 ### Frontend
 
-* React.js
-* Tailwind CSS
-* Axios
-* React Router DOM
+* **React.js** (Vite)
+* **Tailwind CSS** (Styling)
+* **Lucide React** (Icons)
+* **Axios** (API Requests)
+* **React Router DOM** (Navigation)
 
 ### Backend
 
-* Node.js
-* Express.js
-* MongoDB
-* Mongoose
-* JWT Authentication
+* **Node.js & Express.js**
+* **MongoDB & Mongoose** (Database)
+* **JWT Authentication** (Security)
+* **Bcrypt.js** (Password Hashing)
 
-### APIs & Services
+### APIs & External Services
 
-* Google Maps Distance Matrix API *(distance calculation)*
-* RESTful API architecture
+* **Google Maps Distance Matrix API**: For precise mileage-based pricing.
+* **Google Places API**: For address autocomplete functionality.
+* **Razorpay API**: For handling secure payments.
+* **Cloudinary**: For optimized image storage and profile pictures.
 
 ---
 
@@ -81,26 +93,37 @@ The application is built using modern **full-stack technologies** with a focus o
 
 ---
 
-## 📁 Project Structure (Simplified)
+## 📁 Project Structure (Comprehensive)
 
 ```
 MoveEase/
 │
 ├── backend/
-│   ├── routes/
-│   │   ├── auth.js
-│   │   ├── movers.js
-│   │   ├── booking.js
-│   ├── models/
-│   ├── middleware/
-│   ├── server.js
+│   ├── src/
+│   │   ├── config/ (db.js)
+│   │   ├── middleware/ (auth.js, admin.js)
+│   │   ├── models/ (User.js, Mover.js, Booking.js, City.js)
+│   │   ├── routes/ (auth.js, booking.js, admin.js, mover.js, google.js)
+│   │   ├── app.js (Server configuration)
+│   │   └── server.js (Server entry point)
+│   ├── scripts/ (seedAdmin.js, seedCities.js)
+│   ├── uploads/ (Temporary file storage)
+│   ├── .env (Backend environment variables)
+│   └── package.json (Backend dependencies)
 │
 ├── frontend/
-│   ├── components/
-│   ├── pages/
-│   ├── App.jsx
-│
-└── README.md
+│   ├── src/
+│   │   ├── App.jsx (Root component)
+│   │   ├── api.js (Axios instance with JWT interceptors)
+│   │   ├── assets/ (Static images & icons)
+│   │   ├── components/ (MoversList, Reveal, SearchMovers, etc.)
+│   │   ├── hooks/ (useInView.js)
+│   │   ├── layout/ (Navbar.jsx)
+│   │   └── pages/ (Auth/, AdminDash, MoverProfile, Booking, etc.)
+│   ├── public/ (Public assets)
+│   ├── .env (Frontend VITE environment variables)
+│   ├── tailwind.config.js (Styling configuration)
+│   └── package.json (Frontend dependencies)
 ```
 
 ---
@@ -109,33 +132,66 @@ MoveEase/
 
 ### ✅ Prerequisites
 
-* Node.js (v16+ recommended)
-* MongoDB (local or Atlas)
-* npm
-* Google Maps API key
+*   **Node.js** (v18+ recommended)
+*   **MongoDB** (Local instance or MongoDB Atlas)
+*   **Google Maps API Key** (with Distance Matrix and Places APIs enabled)
+*   **Razorpay Account** (for API keys)
+*   **Cloudinary Account** (for asset management)
 
 ---
 
-## 🔧 Backend Setup
+## 🔧 Environment Setup
 
-### 1️⃣ Navigate to Backend Folder
+Create `.env` files in both `backend` and `frontend` directories using the samples below:
 
-```bash
-cd backend
-npm install
-```
-
-### 2️⃣ Backend Environment Variables
-
-Create a `.env` file inside the `backend` directory.
-
-**Example (`backend/.env`):**
+### 1️⃣ Backend Environment (`backend/.env`)
 
 ```env
 PORT=5000
-MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/moveease
-JWT_SECRET=your_jwt_secret
+MONGO_URI=your_mongodb_connection_uri
+JWT_SECRET=your_jwt_strong_secret_key
 GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+RAZORPAY_KEY_ID=your_razorpay_key_id
+RAZORPAY_KEY_SECRET=your_razorpay_key_secret
+CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
+CLOUDINARY_API_KEY=your_cloudinary_api_key
+CLOUDINARY_API_SECRET=your_cloudinary_api_secret
+```
+
+### 2️⃣ Frontend Environment (`frontend/.env`)
+
+```env
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+VITE_RAZORPAY_KEY_ID=your_razorpay_key_id
+VITE_API_URL=http://localhost:5000
+```
+
+---
+
+## 🛠 Installation
+
+### 1. Clone the repo
+```bash
+git clone https://github.com/your-username/MoveEase.git
+cd MoveEase
+```
+
+### 2. Install Backend Dependencies
+```bash
+cd backend
+npm install
+npm run start (or npm run dev)
+```
+
+### 3. Install Frontend Dependencies
+```bash
+cd ../frontend
+npm install
+npm run dev
+```
+
+---
+
 ```
 
 > ⚠️ These values are **examples only**.
@@ -191,29 +247,29 @@ http://localhost:5173
 
 ## 📊 Core Functionalities Explained
 
-### 🔹 Search Movers
+### � Core Functionalities Explained
 
-* Users select a city
-* Backend filters movers using **case-insensitive queries**
-* Results are dynamically displayed on the frontend
+### 🔹 Search & Autocomplete
+
+* Users find movers in their city.
+* **Google Places Autocomplete** is used for precise pickup and drop address selection.
 
 ### 🔹 Distance-Based Pricing
 
-* Pickup & drop locations selected using Google Places
-* Distance calculated using Google Maps Distance Matrix API
-* Price calculated as:
+* Pickup & drop locations are geocoded and distance is calculated via **Google Maps Distance Matrix API**.
+* Final price (Estimated Cost) is calculated as:
+  `Total Cost = Base Price + (Distance × Price per Km)`
 
-```
-Total Cost = Base Price + (Distance × Price per Km)
-```
+### 🔹 10% Commission Model
 
-### 🔹 Booking System
+* **Platform Fee**: A 10% platform fee is automatically deducted from the `Estimated Cost` for every booking.
+* **Mover Earnings**: These are calculation as `Estimated Cost - Platform Fee`.
+* **Auto-Settlement Mechanism**: For cash jobs, the commission is added to `commissionOwed`. When a mover requests a `cashout` for online earnings, the system automatically settles any outstanding commission from their balance first.
 
-* Customers create booking requests
-* Movers manage booking lifecycle
-* Booking access is strictly controlled using roles
-* Customers can only view **their own bookings**
-* Movers can only manage **assigned bookings**
+### 🔹 Payment Integration
+
+* Secure payments powered by **Razorpay**.
+* Payment statuses (`pending`, `paid`, `pay_later`) are tracked to update mover wallets accordingly.
 
 ---
 
