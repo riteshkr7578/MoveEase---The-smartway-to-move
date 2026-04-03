@@ -1,6 +1,13 @@
+import SEO from "../components/SEO";
+
 export default function VehicleTransport() {
   return (
     <>
+      <SEO 
+        title="Vehicle Transport Services - Bike and Car Moving"
+        description="Safe and stress-free transport for your two-wheelers and cars. MoveEase provides secure vehicle carrier services with complete protection."
+        keywords="car transport, bike relocation, vehicle carrier services, packers and movers for cars"
+      />
       <section className="bg-white dark:bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 min-h-screen transition-colors duration-300">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">

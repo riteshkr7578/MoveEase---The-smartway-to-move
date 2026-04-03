@@ -1,5 +1,6 @@
 import SearchMovers from "../components/SearchMovers";
 import MoversList from "../components/MoversList";
+import SEO from "../components/SEO";
 import { useState, useRef, useEffect } from "react";
 import api from "../api";
 import { Link, useNavigate } from "react-router-dom";
@@ -27,6 +28,24 @@ export default function Home() {
       const res = await api.get("/api/movers", {
         params: { city: filters.fromCity }  // 🔥 Pass city to backend
       });
+      setMovers(res.data);
+      if (moversListRef.current) {
+        moversListRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <SEO 
+        title="Home - Best Packers and Movers Near You"
+        description="MoveEase helps you find the most reliable and affordable packers and movers for your next relocation. Compare and book top-rated moving services today."
+        keywords="packers and movers service, local moving company, home relocation, office shifting, move ease"
+      />
+      <Navbar />
+      <section className="relative overflow-hidden pt-20 pb-12 lg:pt-32 lg:pb-20">
 
       setMovers(res.data);
       console.log("Movers from backend:", res.data);

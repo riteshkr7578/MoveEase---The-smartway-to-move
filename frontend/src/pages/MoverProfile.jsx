@@ -1,5 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import { Star, MapPin, CheckCircle, Shield, Truck, Clock } from "lucide-react";
+import SEO from "../components/SEO";
 
 export default function MoverProfile() {
   const { id } = useParams();
@@ -18,6 +19,20 @@ export default function MoverProfile() {
     services: ["Home Shifting", "Office Shifting", "Vehicle Transport", "Fragile Item Handling", "Storage & Warehousing"],
     images: [
         "https://images.pexels.com/photos/5025664/pexels-photo-5025664.jpeg",
+        "https://images.pexels.com/photos/4246011/pexels-photo-4246011.jpeg",
+        "https://images.pexels.com/photos/4481258/pexels-photo-4481258.jpeg",
+    ]
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 pt-20 pb-12 transition-colors duration-300">
+      <SEO 
+        title={`${mover.name} - Professional Movers in ${mover.location}`}
+        description={mover.description}
+        keywords={`packers and movers ${mover.location}, ${mover.name}, relocation services`}
+        ogType="profile"
+      />
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         "https://images.pexels.com/photos/4246120/pexels-photo-4246120.jpeg"
     ]
   };

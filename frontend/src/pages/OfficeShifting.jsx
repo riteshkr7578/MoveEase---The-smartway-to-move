@@ -1,6 +1,13 @@
+import SEO from "../components/SEO";
+
 export default function OfficeShifting() {
   return (
     <>
+      <SEO 
+        title="Office Shifting Services - Corporate Relocation"
+        description="Relocate your office quickly and safely with MoveEase. We handle office equipment, furniture, and documents with precision to ensure minimal downtime."
+        keywords="office relocation, corporate shifting, business moving services, commercial packers and movers"
+      />
       <section className="bg-white dark:bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 min-h-screen transition-colors duration-300">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">
