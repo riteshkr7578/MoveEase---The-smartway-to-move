@@ -16,6 +16,7 @@ import VehicleTransport from "./pages/VehicleTransport";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import MoverDashboard from "./pages/MoverDashboard";
+import MoverProfile from "./pages/MoverProfile";
 
 function App() {
   const { pathname } = useLocation();
@@ -34,6 +35,7 @@ function App() {
           <Route path="/admin" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
           <Route path="/mover-panel" element={<ProtectedRoute><MoverDashboard /></ProtectedRoute>} />
           <Route path="/find-movers" element={<FindMovers />} />
+          <Route path="/mover-profile/:id" element={<MoverProfile />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reviews" element={<Reviews />} />
