@@ -58,7 +58,9 @@ export default function Home() {
 
       // Auto-scroll to movers list after a short delay to ensure rendering
       setTimeout(() => {
-        moversListRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (moversListRef.current) {
+          moversListRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }, 100);
 
     } catch (err) {
