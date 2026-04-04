@@ -16,6 +16,10 @@ import VehicleTransport from "./pages/VehicleTransport";
 import Profile from "./pages/Profile";
 import AdminDashboard from "./pages/AdminDashboard";
 import MoverDashboard from "./pages/MoverDashboard";
+import MoverProfile from "./pages/MoverProfile";
+import Payouts from "./pages/Payouts";
+import LiveTracking from "./pages/LiveTracking";
+import AdminAnalytics from "./pages/AdminAnalytics";
 
 function App() {
   const { pathname } = useLocation();
@@ -32,8 +36,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/admin" element={<ProtectedRoute adminOnly={true}><AdminDashboard /></ProtectedRoute>} />
+          <Route path="/admin/analytics" element={<ProtectedRoute adminOnly={true}><AdminAnalytics /></ProtectedRoute>} />
           <Route path="/mover-panel" element={<ProtectedRoute><MoverDashboard /></ProtectedRoute>} />
+          <Route path="/mover/payouts" element={<ProtectedRoute><Payouts /></ProtectedRoute>} />
+          <Route path="/mover/tracking" element={<ProtectedRoute><LiveTracking /></ProtectedRoute>} />
           <Route path="/find-movers" element={<FindMovers />} />
+          <Route path="/mover-profile/:id" element={<MoverProfile />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/reviews" element={<Reviews />} />

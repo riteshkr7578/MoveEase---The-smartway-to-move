@@ -21,7 +21,7 @@ router.post("/", auth, async (req, res) => {
       return res.status(403).json({ msg: "Only movers can create business profile" });
     }
 
-    const { name, city, basePrice, pricePerKm, serviceAreas } = req.body;
+    const { name, city, basePrice, pricePerKm, serviceAreas, services } = req.body;
 
     if (!name || !city || !basePrice || !pricePerKm) {
       return res.status(400).json({ msg: "All required fields must be provided" });
@@ -36,7 +36,8 @@ router.post("/", auth, async (req, res) => {
         city,
         basePrice,
         pricePerKm,
-        serviceAreas
+        serviceAreas,
+        services
       },
       { new: true, upsert: true }
     );
@@ -100,6 +101,94 @@ router.get("/cities/all", async (req, res) => {
     res.json(allCities);
   } catch (err) {
     res.status(500).json({ msg: "Server error fetching cities" });
+  }
+});
+
+// Cashout: Transfer wallet balance to bank (Simulation)
+// INCLUDES AUTO-SETTLEMENT: Deducts any outstanding commission (cash jobs) from online payout
+router.post("/cashout", auth, async (req, res) => {
+  try {
+    const mover = await Mover.findOne({ owner: req.user._id });
+    if (!mover) return res.status(404).json({ msg: "Mover not found" });
+
+    let payoutAmount = mover.wallet.balance;
+    const commissionDebt = mover.wallet.commissionOwed || 0;
+
+    if (payoutAmount <= 0) return res.status(400).json({ msg: "No balance available for cashout" });
+
+    // Handle Auto-Deduction of Commission Debt
+    let finalPayout = payoutAmount;
+    if (commissionDebt > 0) {
+      if (payoutAmount >= commissionDebt) {
+        // Full debt covered by online balance
+        finalPayout = payoutAmount - commissionDebt;
+        mover.wallet.commissionOwed = 0;
+        
+        // Ledger entry for the internal deduction
+        mover.ledger.push({
+          amount: commissionDebt,
+          type: "deduction",
+          description: `Auto-reconciliation: Platform commission for cash jobs settled from online balance`
+        });
+      } else {
+        // Balance only partially covers debt
+        mover.wallet.commissionOwed = commissionDebt - payoutAmount;
+        finalPayout = 0;
+        
+        mover.ledger.push({
+            amount: payoutAmount,
+            type: "deduction",
+            description: `Partial reconciliation: ₹${payoutAmount.toLocaleString()} applied to platform debt`
+        });
+      }
+    }
+
+    // Process the remaining payout to bank
+    mover.wallet.balance = 0;
+    
+    if (finalPayout > 0) {
+        mover.ledger.push({
+            amount: finalPayout,
+            type: "payout",
+            description: `Cashout processed (Net payout of ₹${finalPayout.toLocaleString()} to bank)`
+        });
+    }
+
+    await mover.save();
+    res.json({ 
+        msg: commissionDebt > 0 ? `Cashout successful! Net payout: ₹${finalPayout.toLocaleString()} (Commission settled)` : "Cashout successful!", 
+        balance: 0, 
+        ledger: mover.ledger 
+    });
+  } catch (err) {
+    console.error("Cashout Error:", err);
+    res.status(500).json({ msg: "Cashout failed" });
+  }
+});
+
+// Pay Commission: Pay the platform for cash bookings (Simulation)
+router.post("/pay-commission", auth, async (req, res) => {
+  try {
+    const mover = await Mover.findOne({ owner: req.user._id });
+    if (!mover) return res.status(404).json({ msg: "Mover not found" });
+
+    const amountToPay = mover.wallet.commissionOwed;
+    if (amountToPay <= 0) return res.status(400).json({ msg: "No commission owed" });
+
+    // Deduct from commissionOwed
+    mover.wallet.commissionOwed = 0;
+    
+    // Add to ledger as deduction
+    mover.ledger.push({
+      amount: amountToPay,
+      type: "deduction",
+      description: `Commission paid to platform for cash bookings`
+    });
+
+    await mover.save();
+    res.json({ msg: "Commission paid successfully!", commissionOwed: 0, ledger: mover.ledger });
+  } catch (err) {
+    res.status(500).json({ msg: "Commission payment failed" });
   }
 });
 

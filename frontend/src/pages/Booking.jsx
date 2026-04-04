@@ -7,7 +7,7 @@ export default function Booking() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const moverId = searchParams.get("moverId");
-  const moveType = searchParams.get("moveType") || "";
+  const [selectedMoveType, setSelectedMoveType] = useState(searchParams.get("moveType") || "");
 
   const [pickup, setPickup] = useState("");
   const [drop, setDrop] = useState("");
@@ -28,13 +28,17 @@ export default function Booking() {
         const res = await api.get(`/api/movers/${moverId}`);
         setMover(res.data);
         
+        // If no moveType was pre-selected, default to the first one the mover offers
+        if (!selectedMoveType && res.data.services?.length > 0) {
+          setSelectedMoveType(res.data.services[0]);
+        }
       } catch (err) {
         console.error("Mover fetch error:", err);
       }
     };
 
     fetchMover();
-  }, [moverId]);
+  }, [moverId, selectedMoveType]);
 
   // Google Places Autocomplete
   useEffect(() => {
@@ -98,6 +102,7 @@ const calculateDistance = async () => {
   const handleBooking = async (paymentOption) => {
     if (!distance) return alert("Calculate distance first!");
     if (!bookingDate) return alert("Please select a booking date!");
+    if (!selectedMoveType) return alert("Please select a service type!");
 
     const token = localStorage.getItem("token");
     if (!token) return navigate("/login");
@@ -110,7 +115,7 @@ const calculateDistance = async () => {
           moverId,
           pickupLocation: pickup,
           dropLocation: drop,
-          moveType,
+          moveType: selectedMoveType,
           bookingDate,
           distance: Number(distance),
           paymentStatus: paymentOption === "pay_later" ? "pay_later" : "pending",
@@ -201,6 +206,27 @@ const calculateDistance = async () => {
       )}
 
       <div className="space-y-5">
+        <div className="space-y-1">
+          <label className="text-sm font-semibold text-gray-600 dark:text-gray-400 ml-1 italic">
+            Select Type of Shifting
+          </label>
+          <select 
+            value={selectedMoveType} 
+            onChange={(e) => setSelectedMoveType(e.target.value)}
+            className="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            {mover?.services?.length > 0 ? (
+              mover.services.map(s => <option key={s} value={s}>{s}</option>)
+            ) : (
+              <>
+                <option value="Home Shifting">Home Shifting</option>
+                <option value="Office Shifting">Office Shifting</option>
+                <option value="Vehicle Transport">Vehicle Transport</option>
+              </>
+            )}
+          </select>
+        </div>
+
         <input
           ref={pickupRef}
           type="text"

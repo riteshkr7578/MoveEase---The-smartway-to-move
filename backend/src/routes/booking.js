@@ -30,8 +30,12 @@ router.post("/", auth, async (req, res) => {
       return res.status(404).json({ msg: "Mover not found" });
     }
 
-    // cost estimation
+    // cost estimation (Total price the customer pays)
     const estimatedCost = mover.basePrice + distance * mover.pricePerKm;
+    
+    // Platform fee deduction (Mover pays 10% fee from their earnings)
+    const platformFee = Math.round(estimatedCost * 0.10);
+    const moverEarnings = estimatedCost - platformFee;
 
     const booking = await Booking.create({
       customer: req.user._id,
@@ -42,6 +46,8 @@ router.post("/", auth, async (req, res) => {
       bookingDate,
       distance,
       estimatedCost,
+      platformFee,
+      moverEarnings,
       status: "pending",
       paymentStatus: paymentStatus || "pending"
     });
@@ -269,6 +275,56 @@ router.put("/:id/status", auth, async (req, res) => {
     // ensure logged-in mover owns this business
     if (String(booking.mover.owner) !== String(req.user._id)) {
       return res.status(403).json({ msg: "Not allowed" });
+    }
+
+    if (status === "completed" && booking.status !== "completed") {
+      const moverProfile = await Mover.findById(booking.mover._id || booking.mover);
+      if (moverProfile) {
+        // Ensure values exist (Fallback if fee calc wasn't in booking schema originally)
+        const total = booking.estimatedCost || 0;
+        const earning = booking.moverEarnings || (total * 0.9);
+        const fee = booking.platformFee || (total * 0.1);
+
+        if (booking.paymentStatus === "paid") {
+          // ONLINE: Add 90% share to the withdrawable balance
+          moverProfile.wallet.balance = (moverProfile.wallet.balance || 0) + earning;
+          moverProfile.ledger.push({
+            booking: booking._id,
+            amount: earning,
+            type: "earning",
+            paymentMethod: "online",
+            description: `Online Earning from #${booking._id.toString().slice(-6)} (90%)`
+          });
+        } else {
+          // CASH: Customer pays Mover directly.
+          moverProfile.ledger.push({
+            booking: booking._id,
+            amount: total,
+            type: "earning",
+            paymentMethod: "cash",
+            description: `Cash Job #${booking._id.toString().slice(-6)}: Total Received`
+          });
+          
+          const cashCommission = total * 0.1;
+          moverProfile.ledger.push({
+            booking: booking._id,
+            amount: cashCommission,
+            type: "deduction",
+            paymentMethod: "cash",
+            description: `Auto-Deduction: Platform Fee (10%) for Cash Job #${booking._id.toString().slice(-6)}`
+          });
+
+          // Deduct from online balance to cover cash job commission
+          moverProfile.wallet.balance = (moverProfile.wallet.balance || 0) - cashCommission; 
+          moverProfile.wallet.commissionOwed = (moverProfile.wallet.commissionOwed || 0) + cashCommission;
+        }
+
+        // Save mover changes
+        await moverProfile.save();
+        console.log(`Updated wallet for Mover ${moverProfile.name}. New Balance: ${moverProfile.wallet.balance}`);
+      } else {
+        console.error("Mover profile not found for booking:", booking._id);
+      }
     }
 
     booking.status = status;

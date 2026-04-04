@@ -1,8 +1,13 @@
+import SEO from "../components/SEO";
+
 export default function HomeShifting() {
   return (
     <>
- 
-
+      <SEO 
+        title="Home Shifting Services - Reliable House Moving"
+        description="Experience a stress-free home relocation with MoveEase. Professional packing, secure transport, and timely delivery of your household goods."
+        keywords="house shifting, home relocation services, packers and movers for home, local house moving"
+      />
       <section className="bg-white dark:bg-gray-900 py-16 px-4 sm:px-8 lg:px-16 min-h-screen transition-colors duration-300">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl font-bold text-gray-800 dark:text-white mb-4">

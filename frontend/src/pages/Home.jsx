@@ -1,14 +1,25 @@
 import SearchMovers from "../components/SearchMovers";
 import MoversList from "../components/MoversList";
-import { useState, useRef } from "react";
+import SEO from "../components/SEO";
+import { useState, useRef, useEffect } from "react";
 import api from "../api";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Reveal from "../components/Reveal";
-
+import Navbar from "../layout/Navbar";
 
 export default function Home() {
   const [movers, setMovers] = useState([]);
   const moversListRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const role = localStorage.getItem("role");
+    if (role === "admin") {
+      navigate("/admin");
+    } else if (role === "mover") {
+      navigate("/mover-panel");
+    }
+  }, [navigate]);
 
   const handleSearch = async (filters) => {
     console.log("User search:", filters);
@@ -17,13 +28,20 @@ export default function Home() {
       const res = await api.get("/api/movers", {
         params: { city: filters.fromCity }  // 🔥 Pass city to backend
       });
-
       setMovers(res.data);
       console.log("Movers from backend:", res.data);
       
+      // Update URL with filters so moveType is preserved when booking
+      const newParams = new URLSearchParams();
+      if (filters.fromCity) newParams.set("city", filters.fromCity);
+      if (filters.moveType) newParams.set("moveType", filters.moveType);
+      window.history.replaceState(null, "", "?" + newParams.toString());
+
       // Auto-scroll to movers list after a short delay to ensure rendering
       setTimeout(() => {
-        moversListRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+        if (moversListRef.current) {
+          moversListRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
       }, 100);
 
     } catch (err) {
@@ -31,11 +49,15 @@ export default function Home() {
     }
   };
 
-
   return (
-  
-    <div>
-
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+      <SEO 
+        title="Home - Best Packers and Movers Near You"
+        description="MoveEase helps you find the most reliable and affordable packers and movers for your next relocation. Compare and book top-rated moving services today."
+        keywords="packers and movers service, local moving company, home relocation, office shifting, move ease"
+      />
+      <Navbar />
+      
       {/* HERO SECTION */}
       <section className="pt-10 pb-20 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
         <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
@@ -105,83 +127,107 @@ export default function Home() {
     <div className="grid md:grid-cols-3 gap-8">
 
       {/* Card 1 */}
-      <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <img
-          src="https://dummyimage.com/300x120/ffffff/000000&text=QuickMove"
-          className="w-full h-28 object-contain mb-4 rounded bg-white"
-        />
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden group hover:translate-y-[-5px] transition-all duration-300 border border-gray-100 dark:border-gray-700">
+        <div className="h-40 bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
+          <img
+            src="https://images.pexels.com/photos/5025667/pexels-photo-5025667.jpeg?auto=compress&cs=tinysrgb&w=300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+             <p className="text-yellow-500 font-bold flex items-center gap-1 text-sm">⭐ 4.8</p>
+          </div>
+        </div>
 
-        <h3 className="text-xl font-bold dark:text-white">QuickMove Packers</h3>
-        <p className="text-yellow-500 font-medium">⭐ 4.8/5</p>
+        <div className="p-6">
+          <h3 className="text-xl font-extrabold dark:text-white group-hover:text-blue-600 transition-colors uppercase tracking-tight">QuickMove Packers</h3>
+          
+          <div className="mt-4 space-y-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Route:</span> Mumbai → Bangalore
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Services:</span> Fragile Items, Vehicles
+            </p>
+          </div>
 
-        <p className="mt-3 text-gray-600 dark:text-gray-300">
-          <b>Route:</b> Mumbai → Bangalore
-        </p>
-        <p className="text-gray-600 dark:text-gray-300">
-          <b>Services:</b> Fragile Items, Vehicle Transport
-        </p>
-
-        <div className="mt-5 flex justify-between">
-         <Link to='/' className="px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-600">
-            View Profile
-          </Link>
-          <Link to='/find-movers' className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Get Quote
-          </Link>
+          <div className="mt-6 flex gap-3">
+            <Link to='/mover-profile/1' className="flex-1 text-center py-2.5 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-xl font-bold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-sm">
+              View Profile
+            </Link>
+            <Link to='/find-movers' className="flex-1 text-center py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all text-sm">
+              Get Quote
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Card 2 */}
-      <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <img
-          src="https://dummyimage.com/300x120/ffffff/000000&text=EasyGo"
-          className="w-full h-28 object-contain mb-4 rounded bg-white"
-        />
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden group hover:translate-y-[-5px] transition-all duration-300 border border-gray-100 dark:border-gray-700">
+        <div className="h-40 bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
+          <img
+            src="https://images.pexels.com/photos/5025662/pexels-photo-5025662.jpeg?auto=compress&cs=tinysrgb&w=300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+             <p className="text-yellow-500 font-bold flex items-center gap-1 text-sm">⭐ 4.7</p>
+          </div>
+        </div>
 
-        <h3 className="text-xl font-bold dark:text-white">EasyGo Relocations</h3>
-        <p className="text-yellow-500 font-medium">⭐ 4.7/5</p>
+        <div className="p-6">
+          <h3 className="text-xl font-extrabold dark:text-white group-hover:text-blue-600 transition-colors uppercase tracking-tight">EasyGo Relocations</h3>
+          
+          <div className="mt-4 space-y-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Route:</span> Delhi → Hyderabad
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Services:</span> Packing & Storage
+            </p>
+          </div>
 
-        <p className="mt-3 text-gray-600 dark:text-gray-300">
-          <b>Route:</b> Delhi → Hyderabad
-        </p>
-        <p className="text-gray-600 dark:text-gray-300">
-          <b>Services:</b> Packing & Storage
-        </p>
-
-        <div className="mt-5 flex justify-between">
-          <Link to='/' className="px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-600">
-            View Profile
-          </Link>
-          <Link to='/find-movers' className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Get Quote
-          </Link>
+          <div className="mt-6 flex gap-3">
+            <Link to='/mover-profile/2' className="flex-1 text-center py-2.5 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-xl font-bold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-sm">
+              View Profile
+            </Link>
+            <Link to='/find-movers' className="flex-1 text-center py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all text-sm">
+              Get Quote
+            </Link>
+          </div>
         </div>
       </div>
 
       {/* Card 3 */}
-      <div className="bg-white dark:bg-gray-700 rounded-2xl shadow-md p-6 hover:shadow-xl transition">
-        <img
-          src="https://dummyimage.com/300x120/ffffff/000000&text=MoveWell"
-          className="w-full h-28 object-contain mb-4 rounded bg-white"
-        />
+      <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl overflow-hidden group hover:translate-y-[-5px] transition-all duration-300 border border-gray-100 dark:border-gray-700">
+        <div className="h-40 bg-gray-100 dark:bg-gray-700 relative overflow-hidden">
+          <img
+            src="https://images.pexels.com/photos/5025644/pexels-photo-5025644.jpeg?auto=compress&cs=tinysrgb&w=300"
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+          <div className="absolute top-4 right-4 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm">
+             <p className="text-yellow-500 font-bold flex items-center gap-1 text-sm">⭐ 4.9</p>
+          </div>
+        </div>
 
-        <h3 className="text-xl font-bold dark:text-white">MoveWell Logistics</h3>
-        <p className="text-yellow-500 font-medium">⭐ 4.9/5</p>
+        <div className="p-6">
+          <h3 className="text-xl font-extrabold dark:text-white group-hover:text-blue-600 transition-colors uppercase tracking-tight">MoveWell Logistics</h3>
+          
+          <div className="mt-4 space-y-2">
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Route:</span> Chennai → Pune
+            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-2">
+              <span className="font-bold text-gray-700 dark:text-gray-300">Services:</span> Office Shifting
+            </p>
+          </div>
 
-        <p className="mt-3 text-gray-600 dark:text-gray-300">
-          <b>Route:</b> Chennai → Pune
-        </p>
-        <p className="text-gray-600 dark:text-gray-300">
-          <b>Services:</b> Office Shifting, Long-Distance
-        </p>
-
-        <div className="mt-5 flex justify-between">
-          <Link to='/' className="px-4 py-2 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-gray-600">
-            View Profile
-          </Link>
-         <Link to='/find-movers' className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-            Get Quote
-          </Link>
+          <div className="mt-6 flex gap-3">
+            <Link to='/mover-profile/3' className="flex-1 text-center py-2.5 border-2 border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-xl font-bold hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all text-sm">
+              View Profile
+            </Link>
+            <Link to='/find-movers' className="flex-1 text-center py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition-all text-sm">
+              Get Quote
+            </Link>
+          </div>
         </div>
       </div>
 
